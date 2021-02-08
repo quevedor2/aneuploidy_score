@@ -29,7 +29,7 @@ cytobandToArm <- function(cytoband){
     
     ## Reduce the arm start-end position and cytoband ranges
     cyt_arms <- lapply(split(cyt, f=arms), function(cyt_arm){
-      cyt_arm[1,'chromEnd'] <- cyt_arm[nrow(cyt_arm),'chromEnd']
+      cyt_arm[1,'chromEnd'] <- (cyt_arm[nrow(cyt_arm),'chromEnd']-1)
       cyt_arm[1,'name'] <- paste0(cyt_arm[1,'name'], "-", cyt_arm[nrow(cyt_arm),'name'])
       cyt_arm[1,'gieStain'] <- NA
       return(cyt_arm[1,,drop=FALSE])

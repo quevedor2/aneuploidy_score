@@ -1,0 +1,17 @@
+Package: AneuploidyScore
+Title: Calculate the Aneuploidy Score from Chromosome Arm SCNAs/Aneuploidies
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Rene",
+           family = "Quevedo",
+           role = c("aut", "cre"),
+           email = "rquevedo@uhnresearch.ca",
+           comment = c(ORCID = "0000-0001-8288-1929"))
+Description: Calculates the aneuploidy score for a given tumor using the .seg
+  file, as outlined by Shukla et al. Nature Comm 2020 paper 
+  (https://doi.org/10.1038/s41467-020-14286-0). This method looks for gains/losses
+  of a chromosome arm, adjusts it for ploidy, and calculates the aneuploidy
+  score.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true

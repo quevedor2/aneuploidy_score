@@ -29,3 +29,25 @@ listData <- function(){
   cat(paste(datas_print, collapse="\n"))
   return(NULL)
 }
+
+#' Validates if the seg is compatible with this R package
+#'
+#' @param seg a Seg file dataframe
+#' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @return
+#'
+#' @examples
+#' .validateSeg(data.frame("Chrom"=1, "start"=1, "end"=2))
+#' .validateSeg(data.frame("chr"=1, "X"=1, "loc.end"=2))
+.validateSeg <- function(seg){
+  seg_check <- TRUE
+  
+  ## GRanges compatibility check
+  seg_check <- tryCatch({
+    makeGRangesFromDataFrame(seg[1,,drop=FALSE])
+    TRUE
+  }, error=function(e){ 
+    FALSE
+  })
+  return(seg_check)
+}

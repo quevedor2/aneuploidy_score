@@ -22,4 +22,5 @@ devtools::build(pkg)
 devtools::install(pkg)
 #devtools::install_github("quevedor2/aneuploidy_score")
 
-
+# library(AneuploidyScore)
+# AneuploidyScore::listData()

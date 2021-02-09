@@ -44,10 +44,33 @@ listData <- function(){
   
   ## GRanges compatibility check
   seg_check <- tryCatch({
-    makeGRangesFromDataFrame(seg[1,,drop=FALSE])
+    GenomicRanges::makeGRangesFromDataFrame(seg[1,,drop=FALSE])
     TRUE
   }, error=function(e){ 
     FALSE
   })
   return(seg_check)
+}
+
+#' Gets fraction of intervals that make up each GR object
+#' @description Takes a GRanges object (ideally and designed for
+#' a single chromosome or chromosome arm) and founds out what fraction
+#' of the total chr/chr_arm each interval makes up of it. It does this
+#' for all intervals with a copy number value (non-NA in cn_col), as 
+#' well as with NA's removed (no CN value (NA) in cn_col).
+#'
+#' @param gr GRanges object of a chromosome or chromosome arm
+#' @param cn_col Column in GRanges object containing CN values [Default='CN']
+#' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @return 2-column data frame of chr_fractions with NA's included 
+#' and NA's excluded
+.getChrarmFractions <- function(gr, cn_col='CN'){
+  na_incl <- round(GenomicRanges::width(gr) / sum(GenomicRanges::width(gr)),3)
+  na_excl <- if(any(is.na(gr[,cn_col]))){
+    round(GenomicRanges::width(gr) / sum(GenomicRanges::width(gr[-which(is.na(gr[,cn_col])),])),3)
+  } else {
+    na_incl
+  }
+  data.frame("na_incl" = na_incl,
+             "na_excl" = na_excl)
 }

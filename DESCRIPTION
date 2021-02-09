@@ -23,4 +23,5 @@ Imports:
     IRanges,
     S4Vectors,
     GenomeInfoDb,
-    methods
+    methods,
+    stats

@@ -44,7 +44,7 @@ listData <- function(){
   
   ## GRanges compatibility check
   seg_check <- tryCatch({
-    GenomicRanges::makeGRangesFromDataFrame(seg[1,,drop=FALSE])
+    makeGRangesFromDataFrame(seg[1,,drop=FALSE])
     TRUE
   }, error=function(e){ 
     FALSE
@@ -62,12 +62,14 @@ listData <- function(){
 #' @param gr GRanges object of a chromosome or chromosome arm
 #' @param cn_col Column in GRanges object containing CN values [Default='CN']
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @importFrom GenomicRanges width
 #' @return 2-column data frame of chr_fractions with NA's included 
 #' and NA's excluded
 .getChrarmFractions <- function(gr, cn_col='CN'){
-  na_incl <- round(GenomicRanges::width(gr) / sum(GenomicRanges::width(gr)),3)
-  na_excl <- if(any(is.na(gr[,cn_col]))){
-    round(GenomicRanges::width(gr) / sum(GenomicRanges::width(gr[-which(is.na(gr[,cn_col])),])),3)
+  na_incl <- round(width(gr) / sum(width(gr)),3)
+  na_excl <- if(any(is.na(mcols(gr)[,cn_col]))){
+    round(width(gr) / 
+            sum(width(gr[-which(is.na(mcols(gr)[,cn_col])),])),3)
   } else {
     na_incl
   }

@@ -10,7 +10,7 @@ cytobandToArm(cytoband)
 \item{cytoband}{cytoband data from data(ucsc.[GENOMEBUILD].cytoband)}
 }
 \value{
-
+List of chromosome arms and their arm-level coordinates in dataframes
 }
 \description{
 Takes the data([CYTOBAND]) information and splits the 

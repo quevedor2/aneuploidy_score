@@ -57,7 +57,7 @@ cytoarm <- cytobandToArm(cytoband)
 #' @examples
 getCAA <- function(segf, cytoband, tcn_col,
                    filter_centromere=FALSE){
-  stopifnot(.validateSeg(segf))
+  stopifnot(AneuploidyScore:::.validateSeg(segf))
   
   ## Set up GenomicRange Objects of cytoband and seg files
   cyto_gr <- lapply(cytoarm, makeGRangesFromDataFrame, keep.extra.columns=TRUE)

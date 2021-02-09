@@ -4,8 +4,8 @@
 #' Then it will reduce and clean up the data before returning it as a list
 #' of chromosomal positions with 3 rows: 'p', 'q', and 'cen'.
 #' @param cytoband cytoband data from data(ucsc.[GENOMEBUILD].cytoband)
-#'
-#' @return
+#' @importFrom stats na.omit
+#' @return List of chromosome arms and their arm-level coordinates in dataframes
 #' @export
 #'
 #' @examples

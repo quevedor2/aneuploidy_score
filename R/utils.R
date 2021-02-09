@@ -34,11 +34,11 @@ listData <- function(){
 #'
 #' @param seg a Seg file dataframe
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
-#' @return
+#' @return LOGICAL
 #'
 #' @examples
-#' .validateSeg(data.frame("Chrom"=1, "start"=1, "end"=2))
-#' .validateSeg(data.frame("chr"=1, "X"=1, "loc.end"=2))
+#' #.validateSeg(data.frame("Chrom"=1, "start"=1, "end"=2))
+#' #.validateSeg(data.frame("chr"=1, "X"=1, "loc.end"=2))
 .validateSeg <- function(seg){
   seg_check <- TRUE
   

@@ -2,3 +2,5 @@
 
 export(cytobandToArm)
 export(listData)
+importFrom(GenomicRanges,makeGRangesFromDataFrame)
+importFrom(stats,na.omit)

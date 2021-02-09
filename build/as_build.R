@@ -14,6 +14,12 @@ devtools::load_all()
 #### Building ####
 #Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/MacOS/pandoc")
 
+usethis::use_package("GenomicRanges")
+usethis::use_package("IRanges")
+usethis::use_package("S4Vectors")
+usethis::use_package("GenomeInfoDb")
+usethis::use_package("methods")
+
 devtools::document(pkg)
 devtools::check(pkg)
 devtools::build_vignettes(pkg)

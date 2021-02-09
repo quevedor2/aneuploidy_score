@@ -18,5 +18,9 @@ LazyData: true
 RoxygenNote: 7.0.0
 Depends:
     R (>= 2.10.0)
-Imports: GenomicRanges
-    
+Imports: 
+    GenomicRanges,
+    IRanges,
+    S4Vectors,
+    GenomeInfoDb,
+    methods

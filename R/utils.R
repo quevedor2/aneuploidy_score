@@ -60,14 +60,16 @@ listData <- function(){
 #' well as with NA's removed (no CN value (NA) in cn_col).
 #'
 #' @param gr GRanges object of a chromosome or chromosome arm
+#' @param classifyCN classify arm-CN into Loss/Neut/Gain [Boolean]
+#' @param ... Parameters for .classifyCN() function
 #' @param cn_col Column in GRanges object containing CN values [Default='CN']
+#'
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @importFrom GenomicRanges width
 #' @importFrom matrixStats weightedMedian
 #' @return 2-column data frame of chr_fractions with NA's included 
 #' and NA's excluded
-.getChrarmFractions <- function(gr, cn_col='CN', classifyCN=FALSE,
-                                ploidy=2, threshold=0.5){
+.getChrarmFractions <- function(gr, cn_col='CN', classifyCN=FALSE, ...){
   na_incl <- round(width(gr) / sum(width(gr)),3)
   na_excl <- if(any(is.na(mcols(gr)[,cn_col]))){
     round(width(gr) / 
@@ -80,8 +82,7 @@ listData <- function(){
                             "na_excl" = na_excl)
   if(classifyCN){
     arm_metrics$armCN <- weightedMedian(gr$CN, width(gr), na.rm=TRUE)
-    arm_metrics$armCNclass <- .classifyCN(cn=arm_metrics$armCN, ploidy=ploidy, 
-                                          threshold=threshold)
+    arm_metrics$armCNclass <- .classifyCN(cn=arm_metrics$armCN, ...)
   }
   
   return(arm_metrics)
@@ -99,9 +100,7 @@ listData <- function(){
 #' ploidy to be considered (e.g. ploidy +/- threshold) (Default=0.5) [Numeric]
 #' @param neg_max The maximum negative value (Default=-100)
 #' @param pos_max The maximum positive value (Default=100)
-#' @param verbose 
-#'
-#' @return
+#' @param verbose Print warning statements or not
 .classifyCN <- function(cn, ploidy=2, threshold=0.5,
                         neg_max=-100, pos_max=100,
                         verbose=FALSE){

@@ -4,12 +4,16 @@
 \alias{.getChrarmFractions}
 \title{Gets fraction of intervals that make up each GR object}
 \usage{
-.getChrarmFractions(gr, cn_col = "CN")
+.getChrarmFractions(gr, cn_col = "CN", classifyCN = FALSE, ...)
 }
 \arguments{
 \item{gr}{GRanges object of a chromosome or chromosome arm}
 
 \item{cn_col}{Column in GRanges object containing CN values [Default='CN']}
+
+\item{classifyCN}{classify arm-CN into Loss/Neut/Gain [Boolean]}
+
+\item{...}{Parameters for .classifyCN() function}
 }
 \value{
 2-column data frame of chr_fractions with NA's included 

@@ -12,7 +12,9 @@
 #' @param cytoarm Output of cytobandToArm() function [List of Data frames]
 #' @param filter_centromere Whether to include or exclude segments
 #' that overlap the centromere [Logical]
-#' @param ... 
+#' @param ... Passes through:
+#' .getChrarmFractions():  classify arm-CN into Loss/Neut/Gain [Boolean]
+#' Parameters for .classifyCN() function (ploidy, threshold, verbose)
 #'
 #' @import GenomicRanges
 #' @importFrom IRanges IRanges

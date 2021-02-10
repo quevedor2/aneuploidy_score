@@ -4,7 +4,7 @@
 \alias{getCAA}
 \title{Seg to CN Chromosomal Fractions}
 \usage{
-getCAA(segf, cytoarm, tcn_col, filter_centromere = FALSE)
+getCAA(segf, cytoarm, tcn_col, filter_centromere = FALSE, ...)
 }
 \arguments{
 \item{segf}{.Seg Data [Data frame]}
@@ -15,6 +15,10 @@ getCAA(segf, cytoarm, tcn_col, filter_centromere = FALSE)
 
 \item{filter_centromere}{Whether to include or exclude segments
 that overlap the centromere [Logical]}
+
+\item{...}{Passes through:
+.getChrarmFractions():  classify arm-CN into Loss/Neut/Gain [Boolean]
+Parameters for .classifyCN() function (ploidy, threshold, verbose)}
 }
 \value{
 A GRangesList split by chromosome with each

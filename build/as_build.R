@@ -20,6 +20,7 @@ usethis::use_package("S4Vectors")
 usethis::use_package("GenomeInfoDb")
 usethis::use_package("methods")
 usethis::use_package("stats")
+usethis::use_package("matrixStats")
 
 
 devtools::document(pkg)

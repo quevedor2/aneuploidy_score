@@ -24,4 +24,5 @@ Imports:
     S4Vectors,
     GenomeInfoDb,
     methods,
-    stats
+    stats,
+    matrixStats

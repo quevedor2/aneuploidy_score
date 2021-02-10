@@ -104,7 +104,6 @@ listData <- function(){
 .classifyCN <- function(cn, ploidy=2, threshold=0.5,
                         neg_max=-100, pos_max=100,
                         verbose=FALSE){
-  print(ploidy)
   loss_threshold <- ploidy - threshold
   gain_threshold <- ploidy + threshold
   if(verbose){

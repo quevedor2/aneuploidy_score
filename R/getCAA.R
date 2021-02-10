@@ -76,19 +76,21 @@ getCAA <- function(segf, cytoarm, tcn_col,
         X_fract <- lapply(split(combc, f=combc$arm), .getChrarmFractions, ...)
         ord <- order(factor(names(X_fract), levels=c("p", "cen", "q")))
         X_fract <- as.data.frame(do.call(rbind, X_fract[ord]))
-        colnames(X_fract) <- c("CAA_frac_NA", "CAA_frac_nonNA")
+        colnames(X_fract)[1:2] <- c("CAA_frac_NA", "CAA_frac_nonNA")
       } else {
         X_fract <- .getChrarmFractions(combc, ...)
-        colnames(X_fract) <- c("Chr_frac_NA", "Chr_frac_nonNA")
+        colnames(X_fract)[1:2] <- c("Chr_frac_NA", "Chr_frac_nonNA")
       }
       mcols(combc) <- cbind(mcols(combc), X_fract)
       return(combc)
     }
     
     combc <- .assembleFrac(combc, assemble_method='chr') # Chromosome fractions
+    print("#")
     combc <- .assembleFrac(combc, assemble_method='arm', classifyCN=classifyCN, 
                            ploidy=ploidy, threshold=threshold) # Chromosome arm fractions
-    print("######")
+    print("##")
+    print("###")
     print(head(combc, 2))
     
     ## Handle intervals that have no CN value (NA; i.e. telomeric ends)

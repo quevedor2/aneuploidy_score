@@ -65,7 +65,8 @@ listData <- function(){
 #' @importFrom GenomicRanges width
 #' @return 2-column data frame of chr_fractions with NA's included 
 #' and NA's excluded
-.getChrarmFractions <- function(gr, cn_col='CN'){
+.getChrarmFractions <- function(gr, cn_col='CN', classifyCN=FALSE,
+                                ploidy, threshold){
   na_incl <- round(width(gr) / sum(width(gr)),3)
   na_excl <- if(any(is.na(mcols(gr)[,cn_col]))){
     round(width(gr) / 
@@ -73,8 +74,16 @@ listData <- function(){
   } else {
     na_incl
   }
-  data.frame("na_incl" = na_incl,
-             "na_excl" = na_excl)
+  
+  arm_metrics <- data.frame("na_incl" = na_incl,
+                            "na_excl" = na_excl)
+  if(classifyCN){
+    arm_metrics$armCN <- weightedMedian(gr$CN, width(gr), na.rm=TRUE)
+    arm_metrics$armCNclass <- .classifyCN(cn=arm_metrics$armCN, ploidy=ploidy, 
+                                          threshold=threshold)
+  }
+  
+  return(arm_metrics)
 }
 
 #' Classify CN into Loss/Neut/Gain

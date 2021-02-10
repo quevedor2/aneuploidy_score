@@ -106,8 +106,15 @@ getCAA <- function(segf, cytoarm, tcn_col,
       return(ca_red)
     }), "GRangesList")
     
+    combc_arms <- unlist(combc_arms)
+    mcols(combc_arms) <- mcols(combc_arms)[,-grep("^UID$", colnames(mcols(combc_arms)))]
+    if(classifyCN){
+      combc_arms$segCNclass <- .classifyCN(cn = combc_arms$CN, ploidy = ploidy, 
+                                           threshold=threshold)
+    }
     
-    return(unlist(combc_arms))
+    
+    return(combc_arms)
   })
   names(seg_cyto_chr) <- names(seg_chr)
   

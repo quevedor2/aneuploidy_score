@@ -88,7 +88,8 @@ getCAA <- function(segf, cytoarm, tcn_col,
     combc <- .assembleFrac(combc, assemble_method='chr') # Chromosome fractions
     combc <- .assembleFrac(combc, assemble_method='arm', classifyCN=classifyCN, 
                            ploidy=ploidy, threshold=threshold) # Chromosome arm fractions
-    
+    print("######")
+    print(head(combc, 2))
     
     ## Handle intervals that have no CN value (NA; i.e. telomeric ends)
     if(any(is.na(combc$CN))) {
@@ -96,6 +97,8 @@ getCAA <- function(segf, cytoarm, tcn_col,
       combc_na <- combc[which(is.na(combc$CN)),]
       combc <- combc[-which(is.na(combc$CN)),] ## Removes intervals with no CN values (NA)
     }
+    print("######")
+    print(head(combc, 2))
     
     ## Reduce intervals where there is no CN change
     # e.g. c(4,4,4,2,4,4) => list(c(4,4,4), c(2), c(4,4))
@@ -106,6 +109,8 @@ getCAA <- function(segf, cytoarm, tcn_col,
       mcols(ca_red) <- mcols(ca)[1,]
       return(ca_red)
     }), "GRangesList")
+    print("#########")
+    print(head(combc_arms[[1]], 2))
     
     
     return(unlist(combc_arms))

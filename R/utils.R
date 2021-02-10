@@ -89,16 +89,20 @@ listData <- function(){
 #' ploidy to be considered (e.g. ploidy +/- threshold) (Default=0.5) [Numeric]
 #' @param neg_max The maximum negative value (Default=-100)
 #' @param pos_max The maximum positive value (Default=100)
+#' @param verbose 
 #'
 #' @return
 .classifyCN <- function(cn, ploidy=2, threshold=0.5,
-                        neg_max=-100, pos_max=100){
+                        neg_max=-100, pos_max=100,
+                        verbose=FALSE){
   loss_threshold <- ploidy - threshold
   gain_threshold <- ploidy + threshold
-  if(loss_threshold < 0) warning("TCN: Loss threshold is below 0. Whole-genome duplication requires a total copy number (TCN) input, not L2R")
-  if(abs(loss_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the loss threshold is too low to be informative")
-  if(abs(gain_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the gain threshold is very distant from copy-neutral (2)")
-  
+  if(verbose){
+    if(loss_threshold < 0) warning("TCN: Loss threshold is below 0. Whole-genome duplication requires a total copy number (TCN) input, not L2R")
+    if(abs(loss_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the loss threshold is too low to be informative")
+    if(abs(gain_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the gain threshold is very distant from copy-neutral (2)")
+  }
+
   # Break down the CN genome into loss/neutral/gain (-1/0/1)
   cn_cuts <- cut(cn, breaks = c(neg_max, loss_threshold, gain_threshold, pos_max))
   levels(cn_cuts) <- c(-1, 0, 1)

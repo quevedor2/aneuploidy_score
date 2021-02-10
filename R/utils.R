@@ -83,6 +83,7 @@ listData <- function(){
   if(classifyCN){
     arm_metrics$armCN <- weightedMedian(gr$CN, width(gr), na.rm=TRUE)
     arm_metrics$armCNclass <- .classifyCN(cn=arm_metrics$armCN, ...)
+    print(arm_metrics)
   }
   
   return(arm_metrics)

@@ -76,3 +76,31 @@ listData <- function(){
   data.frame("na_incl" = na_incl,
              "na_excl" = na_excl)
 }
+
+#' Classify CN into Loss/Neut/Gain
+#' 
+#' @description Classifies CN aberrations as either a Loss (-1), 
+#' neutral (0), or gain (1) relative to some ploidy number +/-
+#' a threshold
+#' 
+#' @param cn A vector of CN values [Numeric]
+#' @param ploidy A numeric value for base ploidy (Default=2) [Numeric]
+#' @param threshold A numeric value for the threshold around the 
+#' ploidy to be considered (e.g. ploidy +/- threshold) (Default=0.5) [Numeric]
+#' @param neg_max The maximum negative value (Default=-100)
+#' @param pos_max The maximum positive value (Default=100)
+#'
+#' @return
+.classifyCN <- function(cn, ploidy=2, threshold=0.5,
+                        neg_max=-100, pos_max=100){
+  loss_threshold <- ploidy - threshold
+  gain_threshold <- ploidy + threshold
+  if(loss_threshold < 0) warning("TCN: Loss threshold is below 0. Whole-genome duplication requires a total copy number (TCN) input, not L2R")
+  if(abs(loss_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the loss threshold is too low to be informative")
+  if(abs(gain_threshold-2) > 2) warning("A Total Copy Number (TCN) method is selected, but the gain threshold is very distant from copy-neutral (2)")
+  
+  # Break down the CN genome into loss/neutral/gain (-1/0/1)
+  cn_cuts <- cut(cn, breaks = c(neg_max, loss_threshold, gain_threshold, pos_max))
+  levels(cn_cuts) <- c(-1, 0, 1)
+  return(as.integer(as.character(cn_cuts)))
+}

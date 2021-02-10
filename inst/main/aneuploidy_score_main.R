@@ -1,5 +1,6 @@
 #devtools::install_github("quevedor2/aneuploidy_score", ref='master')
-devtools::install_github("quevedor2/aneuploidy_score", ref='debug')
+#devtools::install_github("quevedor2/aneuploidy_score", ref='debug')
+devtools::install_github("quevedor2/aneuploidy_score", ref='dev')
 
 library(AneuploidyScore)
 ## For Calculating Aneuploidy Score

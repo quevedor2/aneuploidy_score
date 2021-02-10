@@ -63,10 +63,11 @@ listData <- function(){
 #' @param cn_col Column in GRanges object containing CN values [Default='CN']
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @importFrom GenomicRanges width
+#' @importFrom matrixStats weightedMedian
 #' @return 2-column data frame of chr_fractions with NA's included 
 #' and NA's excluded
 .getChrarmFractions <- function(gr, cn_col='CN', classifyCN=FALSE,
-                                ploidy, threshold){
+                                ploidy=2, threshold=0.5){
   na_incl <- round(width(gr) / sum(width(gr)),3)
   na_excl <- if(any(is.na(mcols(gr)[,cn_col]))){
     round(width(gr) / 

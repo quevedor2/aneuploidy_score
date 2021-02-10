@@ -12,6 +12,7 @@
 #' @param cytoarm Output of cytobandToArm() function [List of Data frames]
 #' @param filter_centromere Whether to include or exclude segments
 #' that overlap the centromere [Logical]
+#' @param ... 
 #'
 #' @import GenomicRanges
 #' @importFrom IRanges IRanges
@@ -28,7 +29,7 @@
 #' 
 #' @export
 getCAA <- function(segf, cytoarm, tcn_col,
-                   filter_centromere=FALSE){
+                   filter_centromere=FALSE, ...){
   # tcn_col = 'Modal_Total_CN'
   stopifnot(.validateSeg(segf))
   
@@ -67,22 +68,23 @@ getCAA <- function(segf, cytoarm, tcn_col,
     }
     
     ## Get chromosomal arm or whole-chromosome fractions for each CN interval
-    .assembleFrac <- function(combc, assemble_method='arm'){
+    .assembleFrac <- function(combc, assemble_method='arm', ...){
       if(assemble_method == 'arm'){
-        X_fract <- lapply(split(combc, f=combc$arm), .getChrarmFractions)
+        X_fract <- lapply(split(combc, f=combc$arm), .getChrarmFractions, ...)
         ord <- order(factor(names(X_fract), levels=c("p", "cen", "q")))
         X_fract <- as.data.frame(do.call(rbind, X_fract[ord]))
         colnames(X_fract) <- c("CAA_frac_NA", "CAA_frac_nonNA")
       } else {
-        X_fract <- .getChrarmFractions(combc)
+        X_fract <- .getChrarmFractions(combc, ...)
         colnames(X_fract) <- c("Chr_frac_NA", "Chr_frac_nonNA")
       }
       mcols(combc) <- cbind(mcols(combc), X_fract)
       return(combc)
     }
     
-    combc <- .assembleFrac(combc, assemble_method='arm') # Chromosome arm fractions
     combc <- .assembleFrac(combc, assemble_method='chr') # Chromosome fractions
+    combc <- .assembleFrac(combc, assemble_method='arm', ...) # Chromosome arm fractions
+    
     
     ## Handle intervals that have no CN value (NA; i.e. telomeric ends)
     if(any(is.na(combc$CN))) {

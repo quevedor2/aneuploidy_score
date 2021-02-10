@@ -11,11 +11,11 @@
 #' @param tcn_col Column ID for CN value [String] 
 #' @param cytoarm Output of cytobandToArm() function [List of Data frames]
 #' @param filter_centromere Whether to include or exclude segments
-#' that overlap the centromere [Logical]
-#' @param ... Passes through:
-#' .getChrarmFractions():  classify arm-CN into Loss/Neut/Gain [Boolean]
-#' Parameters for .classifyCN() function (ploidy, threshold, verbose)
-#'
+#' @param classifyCN classify arm-CN into Loss/Neut/Gain [Boolean]
+#' @param ploidy base-ploidy for Loss/Neut/Gain estimation [Default=0]
+#' @param threshold Threshold around ploidy (+/- threshold) [Default=0.2]
+#' @param ... Parameters for .classifyCN() function (ploidy, threshold, verbose)
+#' 
 #' @import GenomicRanges
 #' @importFrom IRanges IRanges
 #' @importFrom GenomeInfoDb seqlevelsStyle
@@ -31,7 +31,8 @@
 #' 
 #' @export
 getCAA <- function(segf, cytoarm, tcn_col,
-                   filter_centromere=FALSE, ...){
+                   filter_centromere=FALSE, classifyCN=FALSE,
+                   ploidy=0, threshold=0.2, ...){
   # tcn_col = 'Modal_Total_CN'
   stopifnot(.validateSeg(segf))
   
@@ -85,7 +86,8 @@ getCAA <- function(segf, cytoarm, tcn_col,
     }
     
     combc <- .assembleFrac(combc, assemble_method='chr') # Chromosome fractions
-    combc <- .assembleFrac(combc, assemble_method='arm', ...) # Chromosome arm fractions
+    combc <- .assembleFrac(combc, assemble_method='arm', classifyCN=classifyCN, 
+                           ploidy=ploidy, threshold=threshold) # Chromosome arm fractions
     
     
     ## Handle intervals that have no CN value (NA; i.e. telomeric ends)

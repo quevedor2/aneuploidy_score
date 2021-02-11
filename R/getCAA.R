@@ -48,6 +48,12 @@ getCAA <- function(segf, cytoarm, tcn_col,
     segc <- seg_chr[[chr_id]]
     cytoc <- sort(cyto_gr[[chr_id]])
     
+    if(filter_centromere){
+      ## Remove any segment that sligthly overlaps the centromere
+      cen_ov <- findOverlaps(cytoc['cen',], segc)
+      if(length(cen_ov) > 0) segc <- segc[-subjectHits(cen_ov),]
+    }
+    
     ## Create a GRanges object with all unique intervals between segc and cytoc
     starts <- sort(c(GenomicRanges::start(segc), GenomicRanges::start(cytoc)))
     ends <- sort(c(GenomicRanges::end(segc), GenomicRanges::end(cytoc)))
@@ -55,20 +61,14 @@ getCAA <- function(segf, cytoarm, tcn_col,
                      IRanges(start=unique(sort(c(starts, ends[-length(ends)]+1))),
                              end=unique(sort(c(ends, starts[-1]-1)))))
     
-    if(filter_centromere){
-      ## // TODO 
-      # Implement segment removal for centromere overlap
-      ## TODO \\
-    } else {
-      # Map chr-arm to intervals
-      cyto_comb_ov <- findOverlaps(cytoc, combc)
-      mcols(combc)$arm <- names(cytoc[queryHits(cyto_comb_ov),])
-      
-      # Map seg values to intervals
-      segc_comb_ov <- findOverlaps(segc, combc)
-      mcols(combc)$CN <- NA
-      mcols(combc[subjectHits(segc_comb_ov),])$CN <- mcols(segc[queryHits(segc_comb_ov),])[,tcn_col]
-    }
+    # Map chr-arm to intervals
+    cyto_comb_ov <- findOverlaps(cytoc, combc)
+    mcols(combc)$arm <- names(cytoc[queryHits(cyto_comb_ov),])
+    
+    # Map seg values to intervals
+    segc_comb_ov <- findOverlaps(segc, combc)
+    mcols(combc)$CN <- NA
+    mcols(combc[subjectHits(segc_comb_ov),])$CN <- mcols(segc[queryHits(segc_comb_ov),])[,tcn_col]
     
     ## Get chromosomal arm or whole-chromosome fractions for each CN interval
     .assembleFrac <- function(combc, assemble_method='arm', ...){

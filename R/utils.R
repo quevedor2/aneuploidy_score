@@ -81,7 +81,7 @@ listData <- function(){
   arm_metrics <- data.frame("na_incl" = na_incl,
                             "na_excl" = na_excl)
   if(classifyCN){
-    arm_metrics$armCN <- weightedMedian(gr$CN, width(gr), na.rm=TRUE)
+    arm_metrics$armCN <- round(weightedMedian(gr$CN, width(gr), na.rm=TRUE),3)
     arm_metrics$armCNclass <- .classifyCN(cn=arm_metrics$armCN, ...)
   }
   

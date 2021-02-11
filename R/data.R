@@ -82,3 +82,22 @@
 #' }
 #' @source \url{https://genome.ucsc.edu/cgi-bin/}
 "ucsc.mm9.cytoband"
+
+#' Demo .seg file
+#'
+#' A .seg file from CCLE's 639-V urinary carcinoma cell line, processed using ASCAT
+#' with the allele-specific and total copy numbers represented, as well as the L2R.
+#' The data frame was converted into a GenomicRanges object.
+#'
+#' @format A data frame with 384 ranges and 6 metadata columns variables:
+#' \describe{
+#'   \item{nMajor}{Haplotype A specific copy number}
+#'   \item{nMinor}{Haplotype B specific copy number}
+#'   \item{nAraw}{Haplotype A specific copy number (raw)}
+#'   \item{nBraw}{Haplotype B specific copy number (raw)}
+#'   \item{TCN}{Total copy number}
+#'   \item{seg.mean}{Log 2 Ratio (L2R) segment mean}
+#'   ...
+#' }
+#' @source \url{https://portals.broadinstitute.org/ccle}
+"seg"

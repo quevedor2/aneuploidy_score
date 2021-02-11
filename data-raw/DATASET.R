@@ -28,3 +28,21 @@ usethis::use_data(ucsc.mm10.cytoband, overwrite=T)
 
 ucsc.mm39.cytoband <- readAndFormat('mm39')
 usethis::use_data(ucsc.mm39.cytoband, overwrite=T)
+
+#####################################
+#### Demo seg file (CCLE: 639-V) ####
+# CCLE name: 639V_URINARY_TRACT
+# SNP6 Filename: VAULT_p_NCLE_DNAAffy14_GenomeWideSNP_6_F05_698718
+# Gender: M	
+# Site primary: urinary_tract	
+# Histology: carcinoma	
+# Histology subtype: transitional_cell_carcinoma
+# converts cytoband data to R data
+seg <- read.table(file=file.path("~", "git", "aneuploidy_score", "data-raw", "demo.seg"), sep="\t", 
+                  stringsAsFactors = FALSE, check.names = FALSE, header = TRUE)
+seg <- GenomicRanges::makeGRangesFromDataFrame(seg, keep.extra.columns = TRUE)
+colids <- c('nMajor', 'nMinor', 'nAraw', 'nBraw', 'TCN', 'seg.mean')
+seg <- seg[,colids]
+
+usethis::use_data(seg, overwrite=T)
+

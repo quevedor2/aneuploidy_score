@@ -22,6 +22,7 @@
 #' @importFrom S4Vectors mcols
 #' @importFrom matrixStats weightedMedian
 #' @importFrom matrixStats weightedMean
+#' @importFrom stats median
 #' @return A named vector
 #'  ploidy: Ploidy as estimated by ploidy_method 
 #'  WGD: Boolean indicated whether sample is WGD

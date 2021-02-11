@@ -8,6 +8,7 @@ checkIfWGD(
   segf,
   tcn_col,
   threshold = 0.5,
+  input_ploidy = NA,
   wgd_gf = 0.5,
   ploidy_method = "wmean"
 )
@@ -20,6 +21,8 @@ checkIfWGD(
 \item{threshold}{The threshold to call a gain or loss relative
 to base ploidy (ploidy +/- threshold) (Default: 0.5) [Numeric]}
 
+\item{input_ploidy}{If you want to use a specific ploidy-value}
+
 \item{wgd_gf}{Genomic fraction above base_ploidy + threshold to be
 considered genome doubled (Default: 0.5) [Numeric]}
 
@@ -28,7 +31,8 @@ considered genome doubled (Default: 0.5) [Numeric]}
 - 'wmedian': Segment size weighted CN median
 - 'mean': CN mean
 - 'median': CN median
-- 'multi_base2': Nearest base ploidy 2 (e.g. CN=3 -> ploidy of 4)}
+- 'multi_base2': Nearest base ploidy 2 (e.g. CN=3 -> ploidy of 4)
+- 'input': Use a specified ploidy value}
 }
 \value{
 A named vector

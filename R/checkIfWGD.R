@@ -16,6 +16,8 @@
 #'  - 'mean': CN mean
 #'  - 'median': CN median
 #'  - 'multi_base2': Nearest base ploidy 2 (e.g. CN=3 -> ploidy of 4)
+#'  - 'input': Use a specified ploidy value
+#' @param input_ploidy If you want to use a specific ploidy-value 
 #' 
 #' @import GenomicRanges
 #' @importFrom GenomeInfoDb seqlevelsStyle
@@ -28,7 +30,7 @@
 #'  WGD: Boolean indicated whether sample is WGD
 #'   
 #' @export
-checkIfWGD <- function(segf, tcn_col,threshold=0.5,
+checkIfWGD <- function(segf, tcn_col,threshold=0.5, input_ploidy=NA,
                        wgd_gf = 0.5, ploidy_method="wmean"){
   # tcn_col = 'Modal_Total_CN'
   stopifnot(.validateSeg(segf))
@@ -49,6 +51,7 @@ checkIfWGD <- function(segf, tcn_col,threshold=0.5,
                        "mean"=mean(segf_gr$CN),
                        "median"=median(segf_gr$CN),
                        "multi_base2"=as.integer(as.character(ploidy_multi)),
+                       "input"=input_ploidy,
                        NA)
 
   # Calculate the fraction of the genome for each loss, neut, gain

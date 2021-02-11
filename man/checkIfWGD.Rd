@@ -4,24 +4,35 @@
 \alias{checkIfWGD}
 \title{Whole genome doubling checker}
 \usage{
-checkIfWGD(segf, tcn_col, threshold = 0.5, wgd_gf = 0.5, wgd_ploidy = 2)
+checkIfWGD(
+  segf,
+  tcn_col,
+  threshold = 0.5,
+  wgd_gf = 0.5,
+  ploidy_method = "wmean"
+)
 }
 \arguments{
 \item{segf}{.Seg Data [Data frame]}
 
 \item{tcn_col}{Column ID for CN value [String]}
 
-\item{threshold}{The threshold to call diploid
-(Diploid = wgd_ploidy +/- threshold) (Default: 0.5) [Numeric]}
+\item{threshold}{The threshold to call a gain or loss relative
+to base ploidy (ploidy +/- threshold) (Default: 0.5) [Numeric]}
 
-\item{wgd_gf}{Genomic fraction above wgd_ploidy
-to be considered genome-doubled (Default: 0.5) [Numeric]}
+\item{wgd_gf}{Genomic fraction above base_ploidy + threshold to be
+considered genome doubled (Default: 0.5) [Numeric]}
 
-\item{wgd_ploidy}{Base ploidy (Default: 2) [Integer]}
+\item{ploidy_method}{Calculates the base ploidy [Character]
+- 'wmean': Segment size weighted CN mean
+- 'wmedian': Segment size weighted CN median
+- 'mean': CN mean
+- 'median': CN median
+- 'multi_base2': Nearest base ploidy 2 (e.g. CN=3 -> ploidy of 4)}
 }
 \value{
 A named vector
- ploidy: The mean CN weighted by segment sizes
+ ploidy: Ploidy as estimated by ploidy_method 
  WGD: Boolean indicated whether sample is WGD
 }
 \description{

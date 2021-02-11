@@ -25,4 +25,4 @@ Imports:
     GenomeInfoDb,
     methods,
     stats,
-    matrixStats
+    matrixStats (>= 0.55.0)

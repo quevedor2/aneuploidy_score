@@ -55,52 +55,38 @@ segf <- seg_samples[[2]]
 
 
 
-library(AneuploidyScore)
+library("AneuploidyScore")
+data("seg")
 data("ucsc.hg19.cytoband")
+
 cytoband <- ucsc.hg19.cytoband
 cytoarm <- cytobandToArm(cytoband)
 
-wgd_ploidy <- checkIfWGD(segf, tcn_col = tcn_col)
-segf_caa <- getCAA(segf, cytoarm, tcn_col=tcn_col, classifyCN=TRUE,
+## Cohen-Sharir TCN approach:
+tcn_col <- 'TCN'
+wgd_ploidy <- checkIfWGD(seg, tcn_col = tcn_col, threshold = 0.5,
+                         wgd_gf = 0.5, ploidy_method = 'wmean')
+
+threshold <- 0.5
+seg_caa <- getCAA(seg, cytoarm, tcn_col=tcn_col, classifyCN=TRUE,
                    ploidy=wgd_ploidy['ploidy'], threshold=threshold)
 
+arm_threshold <- 0.9
+caa <- reduceArms(seg_caa, caa_method=c('arm', 'seg'), threshold=arm_threshold, 
+                  arm_ids = c('p', 'q'))
+colSums(abs(caa), na.rm = TRUE)
 
-#' @importFrom matrixStats weightedMean
-#' #' @importFrom matrixStats weightedMedian
+## Shukla's L2R approach:
+l2r_col <- 'seg.mean'
+wgd_ploidy <- checkIfWGD(seg, tcn_col = l2r_col, threshold = 0.2,
+                         wgd_gf = 0.5, ploidy_method = 'input', input_ploidy=0)
+wgd_ploidy
 
-## Rescale CN by ploidy if using Total Copy Number
-if(grepl('tcn', cn_method, ignore.case = TRUE)){
-  segf_gr <- unlist(segf_caa)
-  
-  ## Assign base ploidy to closest to a multi of base2 (e.g. 2,4,6,8)
-  ploidy_multi <- cut(wgd_ploidy['ploidy'], breaks=seq(-1,11,by=2), right=FALSE)
-  levels(ploidy_multi) <- seq(0,10, by=2)
-  
-  ploidy_val <- switch(cen_method,
-                       "wmean"=weightedMean(segf_gr$CN, (width(segf_gr)/1*10^6)),
-                       "wmedian"=weightedMedian(segf_gr$CN, (width(segf_gr)/1*10^6)),
-                       "mean"=mean(segf_gr$CN),
-                       "median"=median(segf_gr$CN),
-                       "multi_base2"=as.integer(as.character(ploidy_multi)),
-                       NA)
-  
-  ## get CN-classes per CN-segment
-  segf_gr$deltaCN <- .classifyCN(cn=segf_gr$CN, ploidy=ploidy_val, threshold=0.5)
-  
-  ## get CN-classes per weighted-median chr-arm
-  chrs_segf_gr <- as(lapply(split(segf_gr, f=seqnames(segf_gr)), function(chr_segf){
-    arms_segf <- as(lapply(split(chr_segf, f=chr_segf$arm), function(arm_segf){
-      arm_segf$armCN <- rep(round(weightedMedian(arm_segf$CN),2), length(arm_segf))
-      return(arm_segf)
-    }), "GRangesList")
-    return(unlist(arms_segf))
-  }), "GRangesList")
-  segf_gr <- sort(unlist(chrs_segf_gr))
-  segf_gr$deltaCNarm <- .classifyCN(cn=segf_gr$armCN, ploidy=ploidy_val, threshold=0.5)
-  
-  return(segf_gr)
-}
+threshold <- 0.2
+seg_caa <- getCAA(seg, cytoarm, tcn_col=l2r_col, classifyCN=TRUE,
+                  ploidy=wgd_ploidy['ploidy'], threshold=threshold, filter_centromere = TRUE)
 
-
-
-
+arm_threshold <- 0.9
+caa <- reduceArms(seg_caa, caa_method=c('arm', 'seg'), threshold=arm_threshold, 
+                  arm_ids = c('p', 'q'))
+colSums(abs(caa), na.rm = TRUE)

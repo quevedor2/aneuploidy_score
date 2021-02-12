@@ -4,8 +4,7 @@ The point of this package is to calculate the **Aneuploidy Score** for a chromos
   - Shukla, A., Nguyen, T. H., Moka, S. B., Ellis, J. J., Grady, J. P., Oey, H., ... & Duijf, P. H. (2020). Chromosome arm aneuploidies shape tumour evolution and drug response. Nature communications, 11(1), 1-14. (https://doi.org/10.1038/s41467-020-14286-0)
  
   - Cohen-Sharir, Y., McFarland, J. M., Abdusamad, M., Marquis, C., Bernhard, S. V., Kazachkova, M., ... & Ben-David, U. (2021). Aneuploidy renders cancer cells vulnerable to mitotic checkpoint inhibition. Nature, 1-6. (https://doi.org/10.1038/s41586-020-03114-6)
-  
-R package to calculate the Aneuploidy Score from Chromosome Arm-level SCNAs/Aneuploidies (CAAs) as outlined and expanded by Shukla et al. (https://doi.org/10.1038/s41467-020-14286-0)
+
 
 # Installation
 Install using

@@ -41,4 +41,40 @@ AS and CAAs are calculated two different ways:
     - **AS** = Total number of arm gains/losses
     
 
+# Basic Usage
+To have some data to work with, the CCLE 639-V cell line seg file is included in the package, as well as cytobands downloaded from UCSC table browser for:
+ 
+  - **ucsc.[GENOMEBUILD].cytoband** where GENOMEBUILD=hg19, hg38, mm10, mm9, mm39
+  
+```{r}
+library(AneuploidyScore)
+data("seg")
+data("ucsc.hg19.cytoband")
+```
+
+Clump the cytobands into p-arm, q-arm and centromere segments, then split by chromosome:
+```{r}
+cytoarm <- cytobandToArm(ucsc.hg19.cytoband)
+```
+
+Estimate the ploidy of your individual sample (this method uses the weighted-mean approach):
+```{r}
+tcn_col <- 'TCN'
+wgd_ploidy <- checkIfWGD(seg, tcn_col = tcn_col, threshold = 0.5,
+                         wgd_gf = 0.5, ploidy_method = 'wmean')
+```
+
+Using the estimated ploidy, identify the classification of Loss/Neutral/Gain (-1/0/1) for each CN segment (**segCNclass**) or the Cohen-Sharir's weighted-median chromosome arm (**armCNclass**).
+```{r}
+threshold <- 0.5
+seg_caa <- getCAA(seg, cytoarm, tcn_col=tcn_col, classifyCN=TRUE,
+                  ploidy=wgd_ploidy['ploidy'], threshold=threshold)
+```
+
+Reduce the CN-segment specific GRangesList object down to a simplified chromosome-arm representation and calculate the aneuploidy score:
+```{r}
+caa <- reduceArms(seg_caa, caa_method=c('arm', 'seg'),
+                  arm_ids = c('p', 'q'))
+AS <- colSums(abs(caa), na.rm = TRUE)
+```
 
